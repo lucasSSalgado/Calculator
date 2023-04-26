@@ -68,22 +68,26 @@ sinal.addEventListener('click', () => {
 // INVERT number 1 / x 
 invert.addEventListener('click', () => {
     if (result === null) {
+        console.log('if')
         if (operation === undefined) {
             firstNumber = 1 / parseFloat(firstNumber)
+            printlog()
         }
         else {
             secondNumber = 1 / parseFloat(secondNumber)
+            printlog()
         }
+        printlog()
         showNumber()
     }
     else {
-        firstNumber = result
+        console.log('ELSE')
+        result = 1 / parseFloat(firstNumber)
         result = null
         secondNumber = ''
         operation = undefined
-        firstNumber = 1 / parseFloat(firstNumber)
         showNumber()
-    }    
+    }       
 })
 // DIVISION 
 division.addEventListener('click', () => {
@@ -218,10 +222,10 @@ function mapNumbers() {
     for (let i = 0; i < 10; i++) {
         numbers[i].addEventListener('click', () => {
             if (operation === undefined) {
-                firstNumber += i
+                firstNumber += String(i)
             }
             else {
-                secondNumber += i
+                secondNumber += String(i)
             }
             showNumber()
         })
@@ -244,5 +248,11 @@ function showNumber() {
 // clear display
 function clearDisplay() {
     showing.innerText = 0
+}
+
+function printlog() {
+    console.log(firstNumber)
+    console.log(secondNumber)
+    console.log(operation)
 }
 mapNumbers()
