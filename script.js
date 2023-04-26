@@ -14,6 +14,8 @@ const numbers = [zero, one, two, three, four, five, six, seven, eight, nine]
 
 // operations
 const showing = document.getElementById('showing')
+showing.style.textAlign = 'right'
+showing.style.fontSize = '3rem'
 
 const ac = document.getElementById('ac')
 const sinal = document.getElementById('sinal')
@@ -25,24 +27,24 @@ const plus = document.getElementById('plus')
 const point = document.getElementById('point')
 const igual = document.getElementById('igual')
 
+// develop variable
+const refresh = document.getElementById('refresh')
+
 // variables
-let firstNumber = '';
-let secondNumber = '';
-let operation;
+let firstNumber = ''
+let secondNumber = ''
+let operation
+let result = null
 
-// show the number in display
-function showNumber() {
-    showing.style.textAlign = 'right'
-    showing.textContent = firstNumber 
-}
-
+////////////////////////// MATH FUNCTIONS //////////////////////////////
 // clean all variables
 ac.addEventListener('click', () => {
     firstNumber = ''
     secondNumber = ''
     operation = undefined
+    result = null
+    showNumber()    
 })
-
 // change sinal of the current number
 sinal.addEventListener('click', () => {
     if (operation === undefined) {
@@ -51,9 +53,9 @@ sinal.addEventListener('click', () => {
     else {
         secondNumber = parseFloat(secondNumber) * -1
     }
+    showNumber()
 })
-
-// invert operation 1 / x 
+// invert number 1 / x 
 invert.addEventListener('click', () => {
     if (operation === undefined) {
         firstNumber = 1 / parseFloat(firstNumber)
@@ -61,45 +63,113 @@ invert.addEventListener('click', () => {
     else {
         secondNumber = 1 / parseFloat(secondNumber)
     }
+    showNumber()
 })
-
-// division 
-division.addEventListener('click', () => operation = 'division')
-
-// multiplication
-multiply.addEventListener('click', () => operation = 'multiply')
-
-// minus
-minus.addEventListener('click', () => operation = 'minus')
-
-// plus
-plus.addEventListener('click', () => operation = 'plus')
-
-// point
+// save operator has division 
+division.addEventListener('click', () => {
+    operation ='/'
+    showNumber()
+})
+//  save operator hasmultiplication
+multiply.addEventListener('click', () => {
+    operation = 'X'
+    showNumber()
+})
+// save operator has minus
+minus.addEventListener('click', () => {
+    operation = '-'
+    showNumber()
+})
+// save operator has plus
+plus.addEventListener('click', () => {
+    operation = '+'
+    showNumber()
+})
+// Add a point if it not exist yet calling thereIsPoint()
 point.addEventListener('click', () => {
-    
+    let point = thereIsPoint()
+    if (operation === undefined && point === false) {
+        firstNumber += '.'
+        showNumber()
+    } 
+    else if (operation !== undefined && point === false) {
+        secondNumber += '.'
+        showNumber()
+    }    
+    else {
+        return
+    }
+})
+// make operation when click
+igual.addEventListener('click', () => {
+    // test if every thing ready
+    if (firstNumber === '' || secondNumber === '' || operation === undefined) return
+
+    switch (operation) {
+        case '/':
+            result = parseFloat(firstNumber) / parseFloat(secondNumber)
+            showNumber()
+            break
+        case 'X':
+            result = parseFloat(firstNumber) * parseFloat(secondNumber)
+            showNumber()
+            break
+        case '-':
+            result = parseFloat(firstNumber) - parseFloat(secondNumber)
+            showNumber()
+            break
+        case '+':
+            result = parseFloat(firstNumber) + parseFloat(secondNumber)
+            showNumber()
+            break    
+        default:
+            break
+    }
 })
 
-// store the numbers when display is clicked
+//////////////// UTILITIES //////////////////////////////////
+// search of a point in the array
+function thereIsPoint() {
+    if (operation === undefined) {
+        for (let i = 0; i < firstNumber.length; i++) {
+            if (firstNumber[i] === '.') return true
+        }
+    } 
+    else {
+        for (let i = 0; i < secondNumber.length; i++) {
+            if (secondNumber[i] === '.') return true
+        }
+    }
+    return false
+}
+// store the numbers when display is clicked and start the app
 function mapNumbers() {
     for (let i = 0; i < 10; i++) {
         numbers[i].addEventListener('click', () => {
-            console.log('entrou')
             if (operation === undefined) {
                 firstNumber += i
             }
             else {
                 secondNumber += i
             }
+            showNumber()
         })
     }    
 }
+// show the number in display
+function showNumber() {
+    if (result === null) {
+        if(operation === undefined) {
+            showing.innerText = firstNumber
+        }
+        else {
+            showing.innerText = firstNumber + ' ' + operation + ' ' + secondNumber
+        }
 
-igual.addEventListener('click', () => {
-    console.log(firstNumber)
-    console.log(secondNumber)
-    console.log(operation)
-    showNumber()
-})
+    }
+    else {
+        showing.innerText =  result.toFixed(2)
+    }    
+}
 
 mapNumbers()
