@@ -1,4 +1,4 @@
-// number 
+// numbers  
 const zero = document.getElementById('zero')
 const one = document.getElementById('one')
 const two = document.getElementById('two')
@@ -17,6 +17,7 @@ const showing = document.getElementById('showing')
 showing.style.textAlign = 'right'
 showing.style.fontSize = '3rem'
 
+// get all buttons
 const ac = document.getElementById('ac')
 const sinal = document.getElementById('sinal')
 const invert = document.getElementById('invert')
@@ -27,10 +28,7 @@ const plus = document.getElementById('plus')
 const point = document.getElementById('point')
 const igual = document.getElementById('igual')
 
-// develop variable
-const refresh = document.getElementById('refresh')
-
-// variables
+// variables use in calcs
 let firstNumber = ''
 let secondNumber = ''
 let operation
@@ -43,59 +41,123 @@ ac.addEventListener('click', () => {
     secondNumber = ''
     operation = undefined
     result = null
-    showNumber()    
+    clearDisplay()  
 })
 // change sinal of the current number
 sinal.addEventListener('click', () => {
-    if (operation === undefined) {
+    if (result === null) {
+        if (operation === undefined) {
+            firstNumber = parseFloat(firstNumber) * -1
+        }
+        else {
+            secondNumber = parseFloat(secondNumber) * -1
+        }
+        showNumber()
+    }
+    else {
+        firstNumber = result
+        result = null
+        operation = undefined
         firstNumber = parseFloat(firstNumber) * -1
-    }
-    else {
-        secondNumber = parseFloat(secondNumber) * -1
-    }
-    showNumber()
+        showNumber()
+    }    
 })
-// invert number 1 / x 
+// INVERT number 1 / x 
 invert.addEventListener('click', () => {
-    if (operation === undefined) {
-        firstNumber = 1 / parseFloat(firstNumber)
+    if (result === null) {
+        if (operation === undefined) {
+            firstNumber = 1 / parseFloat(firstNumber)
+        }
+        else {
+            secondNumber = 1 / parseFloat(secondNumber)
+        }
+        showNumber()
     }
     else {
-        secondNumber = 1 / parseFloat(secondNumber)
-    }
-    showNumber()
+        firstNumber = result
+        result = null
+        secondNumber = ''
+        operation = undefined
+        firstNumber = 1 / parseFloat(firstNumber)
+        showNumber()
+    }    
 })
-// save operator has division 
+// DIVISION 
 division.addEventListener('click', () => {
-    operation ='/'
-    showNumber()
+    if (result === null) {
+        operation = '/'
+        showNumber()
+    }
+    else {
+        firstNumber = result
+        result = null
+        secondNumber = ''
+        operation = '/'
+        showNumber()
+    }   
 })
-//  save operator hasmultiplication
+// NULTIPLICATION 
 multiply.addEventListener('click', () => {
-    operation = 'X'
-    showNumber()
+    if (result === null) {
+        operation = 'X'
+        showNumber()
+    }
+    else {
+        firstNumber = result
+        result = null
+        secondNumber = ''
+        operation = 'X'
+        showNumber()
+    }   
 })
-// save operator has minus
+// MINUS 
 minus.addEventListener('click', () => {
-    operation = '-'
-    showNumber()
+    if (result === null) {
+        operation = '-'
+        showNumber()
+    }
+    else {
+        firstNumber = result
+        result = null
+        secondNumber = ''
+        operation = '-'
+        showNumber()
+    }
+    
 })
-// save operator has plus
+// PLUS
 plus.addEventListener('click', () => {
-    operation = '+'
-    showNumber()
+    if (result === null) {
+        operation = '+'
+        showNumber()
+    }
+    else {
+        firstNumber = result
+        result = null
+        secondNumber = ''
+        operation = '+'
+        showNumber()
+    }    
 })
 // Add a point if it not exist yet calling thereIsPoint()
 point.addEventListener('click', () => {
     let point = thereIsPoint()
-    if (operation === undefined && point === false) {
+    if (operation === undefined && point === false && firstNumber.length !== 0) {
         firstNumber += '.'
         showNumber()
     } 
-    else if (operation !== undefined && point === false) {
+    else if (operation === undefined && point === false && firstNumber.length === 0) {
+        firstNumber += '0.'
+        showNumber()
+    }
+    else if (operation !== undefined && point === false && secondNumber.length !== 0) {
         secondNumber += '.'
         showNumber()
-    }    
+    }  
+    else if (operation !== undefined && point === false && secondNumber.length === 0)  {
+        secondNumber += '0.'
+        showNumber()
+    }
     else {
         return
     }
@@ -165,11 +227,13 @@ function showNumber() {
         else {
             showing.innerText = firstNumber + ' ' + operation + ' ' + secondNumber
         }
-
     }
     else {
-        showing.innerText =  result.toFixed(2)
-    }    
+        showing.innerText =  result
+    }        
 }
-
+// clear display
+function clearDisplay() {
+    showing.innerText = 0
+}
 mapNumbers()

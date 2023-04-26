@@ -23,7 +23,7 @@ button {
     margin: 0 auto;
 }
 #calc {
-    width: 500px;
+    width: 400px;
     margin: 20px auto;
     border: 0.5px solid gray;
     border-radius: 25px;
@@ -31,11 +31,10 @@ button {
     background: whitesmoke;
 }
 #display{
-    height: 130px;
     border: 0.5px solid gray;
     margin-bottom: 5px;
     padding: 5px;
-    border-radius: 5px;
+    border-radius: 10px;    
 }
 #equal {
     text-align: center;
