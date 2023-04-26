@@ -59,6 +59,7 @@ sinal.addEventListener('click', () => {
     else {
         firstNumber = result
         result = null
+        secondNumber = ''
         operation = undefined
         firstNumber = parseFloat(firstNumber) * -1
         showNumber()
@@ -98,7 +99,7 @@ division.addEventListener('click', () => {
         showNumber()
     }   
 })
-// NULTIPLICATION 
+// MULTIPLICATION 
 multiply.addEventListener('click', () => {
     if (result === null) {
         operation = 'X'
