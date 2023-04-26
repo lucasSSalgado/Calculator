@@ -41,6 +41,8 @@ ac.addEventListener('click', () => {
     secondNumber = ''
     operation = undefined
     result = null
+    showing.style.fontSize = '3rem'
+    showing.style.fontFamily = 'sans'
     clearDisplay()  
 })
 // change sinal of the current number
@@ -169,6 +171,12 @@ igual.addEventListener('click', () => {
 
     switch (operation) {
         case '/':
+            if (secondNumber == 0) {
+                showing.innerText = 'Black holes are where God divided by zero - Albert Einstein'
+                showing.style.fontSize = '2.2rem'
+                showing.style.fontFamily = 'cursive'
+                return
+            } 
             result = parseFloat(firstNumber) / parseFloat(secondNumber)
             showNumber()
             break
