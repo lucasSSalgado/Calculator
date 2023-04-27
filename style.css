@@ -38,6 +38,11 @@ button {
     word-wrap: break-word;
     word-break: break-all;
 }
+#showing {
+    text-align: right;
+    font-size: 3rem;
+    font-family: cursive;
+}
 #equal {
     text-align: center;
     font-size: 1.5rem;

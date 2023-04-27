@@ -9,142 +9,96 @@ const six = document.getElementById('six')
 const seven = document.getElementById('seven')
 const eight = document.getElementById('eight')
 const nine = document.getElementById('nine')
-
 const numbers = [zero, one, two, three, four, five, six, seven, eight, nine]
-
 // operations
 const showing = document.getElementById('showing')
-showing.style.textAlign = 'right'
-showing.style.fontSize = '3rem'
-
 // get all buttons
 const ac = document.getElementById('ac')
 const sinal = document.getElementById('sinal')
 const invert = document.getElementById('invert')
-const division = document.getElementById('division')
+const divisionSymbol = document.getElementById('division')
 const multiply = document.getElementById('multiply')
 const minus = document.getElementById('minus')
 const plus = document.getElementById('plus')
 const point = document.getElementById('point')
 const igual = document.getElementById('igual')
-
 // variables use in calcs
 let firstNumber = ''
 let secondNumber = ''
 let operation
 let result = null
-
 ////////////////////////// MATH FUNCTIONS //////////////////////////////
 // clean all variables
 ac.addEventListener('click', () => {
-    firstNumber = ''
-    secondNumber = ''
-    operation = undefined
-    result = null
-    showing.style.fontSize = '3rem'
-    showing.style.fontFamily = 'sans'
+    cleanVariables()
     clearDisplay()  
 })
 // change sinal of the current number
 sinal.addEventListener('click', () => {
-    if (result === null) {
-        if (operation === undefined) {
-            firstNumber = parseFloat(firstNumber) * -1
-        }
-        else {
-            secondNumber = parseFloat(secondNumber) * -1
-        }
-        showNumber()
-    }
-    else {
-        firstNumber = result
-        result = null
-        secondNumber = ''
+    if (result !== null) {
+        repeat()
         operation = undefined
         firstNumber = parseFloat(firstNumber) * -1
         showNumber()
-    }    
-})
+        return
+    }
+    if (operation === undefined) {
+        firstNumber = parseFloat(firstNumber) * -1
+    }
+    else {
+        secondNumber = parseFloat(secondNumber) * -1
+    }
+    showNumber()
+    })
 // INVERT number 1 / x 
 invert.addEventListener('click', () => {
-    if (result === null) {
-        console.log('if')
-        if (operation === undefined) {
-            firstNumber = 1 / parseFloat(firstNumber)
-            printlog()
-        }
-        else {
-            secondNumber = 1 / parseFloat(secondNumber)
-            printlog()
-        }
-        printlog()
+    if (result !== null) {
+        result = 1 / parseFloat(result)
+        operation = undefined
+        repeat()        
         showNumber()
+        return
+    }
+
+    if (operation === undefined) {
+        firstNumber = 1 / parseFloat(firstNumber)
     }
     else {
-        console.log('ELSE')
-        result = 1 / parseFloat(firstNumber)
-        result = null
-        secondNumber = ''
-        operation = undefined
-        showNumber()
-    }       
+        secondNumber = 1 / parseFloat(secondNumber)
+    }
+    showNumber()
 })
 // DIVISION 
-division.addEventListener('click', () => {
-    if (result === null) {
-        operation = '/'
-        showNumber()
+divisionSymbol.addEventListener('click', () => {
+    if (result !== null) { 
+        repeat()
     }
-    else {
-        firstNumber = result
-        result = null
-        secondNumber = ''
-        operation = '/'
-        showNumber()
-    }   
+    operation = '/'
+    showNumber()  
 })
 // MULTIPLICATION 
 multiply.addEventListener('click', () => {
-    if (result === null) {
-        operation = 'X'
-        showNumber()
+    if (result !== null) {
+        repeat()
     }
-    else {
-        firstNumber = result
-        result = null
-        secondNumber = ''
-        operation = 'X'
-        showNumber()
-    }   
+    operation = 'X'
+    showNumber()   
 })
 // MINUS 
 minus.addEventListener('click', () => {
-    if (result === null) {
-        operation = '-'
-        showNumber()
+    if (result !== null) {
+        repeat()
     }
-    else {
-        firstNumber = result
-        result = null
-        secondNumber = ''
-        operation = '-'
-        showNumber()
-    }
-    
+    operation = '-'
+    showNumber()    
 })
 // PLUS
 plus.addEventListener('click', () => {
-    if (result === null) {
-        operation = '+'
-        showNumber()
+    if (result !== null) {
+        repeat()
     }
-    else {
-        firstNumber = result
-        result = null
-        secondNumber = ''
-        operation = '+'
-        showNumber()
-    }    
+    operation = '+'
+    showNumber()
 })
 // Add a point if it not exist yet calling thereIsPoint()
 point.addEventListener('click', () => {
@@ -173,35 +127,46 @@ point.addEventListener('click', () => {
 igual.addEventListener('click', () => {
     // test if every thing ready
     if (firstNumber === '' || secondNumber === '' || operation === undefined) return
-
     switch (operation) {
         case '/':
-            if (secondNumber == 0) {
-                showing.innerText = 'Black holes are where God divided by zero - Albert Einstein'
-                showing.style.fontSize = '2.2rem'
-                showing.style.fontFamily = 'cursive'
-                return
-            } 
-            result = parseFloat(firstNumber) / parseFloat(secondNumber)
-            showNumber()
+            division()
             break
         case 'X':
-            result = parseFloat(firstNumber) * parseFloat(secondNumber)
-            showNumber()
+            multiplication()
             break
         case '-':
-            result = parseFloat(firstNumber) - parseFloat(secondNumber)
-            showNumber()
+            subtration()
             break
         case '+':
-            result = parseFloat(firstNumber) + parseFloat(secondNumber)
-            showNumber()
+            addition()
             break    
         default:
             break
     }
 })
-
+/////////////////////////// CALCULATIONS //////////////////////////////
+function division() {
+    if (secondNumber == 0) {
+        showing.innerText = 'Black holes are where God divided by zero - Albert Einstein'
+        showing.style.fontSize = '2.2rem'
+        showing.style.fontFamily = 'cursive'
+        return
+    } 
+    result = parseFloat(firstNumber) / parseFloat(secondNumber)
+    showNumber()
+}
+function multiplication() {
+    result = parseFloat(firstNumber) * parseFloat(secondNumber)
+    showNumber()
+}
+function subtration() {
+    result = parseFloat(firstNumber) - parseFloat(secondNumber)
+    showNumber()
+}
+function addition() {
+    result = parseFloat(firstNumber) + parseFloat(secondNumber)
+    showNumber()
+}
 //////////////// UTILITIES //////////////////////////////////
 // search of a point in the array
 function thereIsPoint() {
@@ -217,17 +182,30 @@ function thereIsPoint() {
     }
     return false
 }
+// permit the continuous calcs
+function repeat() {
+    firstNumber = result
+    result = null
+    secondNumber = ''
+}
 // store the numbers when display is clicked and start the app
 function mapNumbers() {
     for (let i = 0; i < 10; i++) {
         numbers[i].addEventListener('click', () => {
-            if (operation === undefined) {
-                firstNumber += String(i)
+            if (result === null) {
+                if (operation === undefined) {
+                    firstNumber += String(i)
+                }
+                else {
+                    secondNumber += String(i)
+                }
+                showNumber()
             }
             else {
-                secondNumber += String(i)
-            }
-            showNumber()
+                cleanVariables()
+                firstNumber += String(i)
+                showNumber()
+            }            
         })
     }    
 }
@@ -243,16 +221,16 @@ function showNumber() {
     }
     else {
         showing.innerText =  result
-    }        
+    }   
+    console.log(firstNumber, secondNumber, operation, result)     
 }
-// clear display
 function clearDisplay() {
     showing.innerText = 0
 }
-
-function printlog() {
-    console.log(firstNumber)
-    console.log(secondNumber)
-    console.log(operation)
+function cleanVariables() {
+    firstNumber = ''
+    secondNumber = ''
+    operation = undefined
+    result = null
 }
 mapNumbers()
